@@ -6,8 +6,8 @@
 
   <PropertyGroup>
     <Authors>Chino Chang</Authors>
-    <Description>Hawk authentication client library for .NET Core.</Description>
-    <PackageTags>authentication;hawk;hmac</PackageTags>
+    <Description>Signing HTTP Messages client library for .NET Core.</Description>
+    <PackageTags>signature;http-message-signatures</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

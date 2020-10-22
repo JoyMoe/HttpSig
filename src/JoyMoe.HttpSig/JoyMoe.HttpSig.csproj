@@ -6,8 +6,8 @@
 
   <PropertyGroup>
     <Authors>Chino Chang</Authors>
-    <Description>Hawk authentication implementation for .NET Core, see JoyMoe.HttpSig.AspNetCore for authentication middleware and JoyMoe.HttpSig.Client for client helper.</Description>
-    <PackageTags>authentication;hawk;hmac</PackageTags>
+    <Description>Signing HTTP Messages implementation for .NET Core.</Description>
+    <PackageTags>signature;http-message-signatures</PackageTags>
   </PropertyGroup>
 
 </Project>
