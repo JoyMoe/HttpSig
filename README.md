@@ -1,6 +1,6 @@
 # HttpSig
 
-IETF Internet-Draft [Signing HTTP Messages](https://tools.ietf.org/html/draft-richanna-http-message-signatures) Handler and Client Helper for .Net Core
+IETF Internet-Draft [Signing HTTP Messages](https://tools.ietf.org/html/draft-ietf-httpbis-message-signatures-00) Handler and Client Helper for .Net Core.
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/JoyMoe/HttpSig/build)](https://github.com/JoyMoe/HttpSig/actions)
 [![license](https://img.shields.io/github/license/JoyMoe/HttpSig.svg)](https://github.com/JoyMoe/HttpSig/blob/master/LICENSE)
