@@ -25,9 +25,9 @@ namespace JoyMoe.HttpSig.Tests
             _credential = new HttpSigRsaCredential
             {
                 KeyId = "Test",
-#pragma warning disable CS0618
+#pragma warning disable CS0618 // Use of obsolete symbol
                 Algorithm = Algorithms.RsaSha256,
-#pragma warning restore CS0618
+#pragma warning restore CS0618 // Use of obsolete symbol
                 PublicKey = RSA.Create()
             };
 

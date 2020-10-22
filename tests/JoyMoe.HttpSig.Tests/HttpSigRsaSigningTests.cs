@@ -115,9 +115,9 @@ EQeNC8fHGg4UXU8mhHnSBt3EA10qQJfRDs15M38eG2cYwB1PZpDHScDnDA0=
         [Fact]
         public void MinimalRequiredSignatureVerificationTests()
         {
-#pragma warning disable CS0618
+#pragma warning disable CS0618 // Use of obsolete symbol
             _credential.Algorithm = Algorithms.RsaSha256;
-#pragma warning restore CS0618
+#pragma warning restore CS0618 // Use of obsolete symbol
 
             var signature = HttpSigSignature.Parse(@"keyId=""test-key-a"", created=1402170695, signature=""V3SijFpJOvDUT8t1/EnYli/4TbF2AGqwBGiGUGrgClCkiOAIlOxxY72Mr13DccFkYzg3gX1jIOpKXzH70C5bru4b71SBG+ShiJLu34gHCG33iw44NLGUvT5+F+LCKbbHberyk8eyYsZ+TLwtZAYKafxfNOWQXF4o3QaWslDMm8Tcgrd8onM45ayFyR4nXRlcGad4PISYGz8PmO4Y+K8RYOyDkgsmRxKtftFQUYG41anyElccNLfEfLBKsyV6kxr36U1Q7FdUopLv8kqluQySrWD6kesvFxNvbEOi+1uZqTuFlK8ZldITQiqtNYaabRjQFZio63gma2y+UAaTGLdM9A==""");
 
@@ -128,9 +128,9 @@ EQeNC8fHGg4UXU8mhHnSBt3EA10qQJfRDs15M38eG2cYwB1PZpDHScDnDA0=
         [Fact]
         public void MinimalSignatureVerificationTests()
         {
-#pragma warning disable CS0618
+#pragma warning disable CS0618 // Use of obsolete symbol
             _credential.Algorithm = Algorithms.RsaSha256;
-#pragma warning restore CS0618
+#pragma warning restore CS0618 // Use of obsolete symbol
 
             var signature = HttpSigSignature.Parse(@"keyId=""test-key-a"", headers=""date"", signature=""HtXycCl97RBVkZi66ADKnC9c5eSSlb57GnQ4KFqNZplOpNfxqk62JzZ484jXgLvoOTRaKfR4hwyxlcyb+BWkVasApQovBSdit9Ml/YmN2IvJDPncrlhPDVDv36Z9/DiSO+RNHD7iLXugdXo1+MGRimW1RmYdenl/ITeb7rjfLZ4b9VNnLFtVWwrjhAiwIqeLjodVImzVc5srrk19HMZNuUejK6I3/MyN3+3U8tIRW4LWzx6ZgGZUaEEP0aBlBkt7Fj0Tt5/P5HNW/Sa/m8smxbOHnwzAJDa10PyjzdIbywlnWIIWtZKPPsoVoKVopUWEU3TNhpWmaVhFrUL/O6SN3w==""");
 
