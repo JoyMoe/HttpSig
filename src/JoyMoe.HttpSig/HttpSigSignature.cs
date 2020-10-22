@@ -30,9 +30,7 @@ namespace JoyMoe.HttpSig
                 var separator = part.IndexOf('=', StringComparison.InvariantCulture);
 
                 var key = part.Substring(0, separator).Trim();
-                var value = part.Substring(separator + 1)
-                    .Replace("\n", "", StringComparison.InvariantCulture)
-                    .Trim('"');
+                var value = part.Substring(separator + 1).Trim('"');
 
                 switch (key)
                 {
