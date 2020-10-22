@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Chino Chang</Authors>
+    <Description>Hawk authentication implementation for .NET Core, see JoyMoe.HttpSig.AspNetCore for authentication middleware and JoyMoe.HttpSig.Client for client helper.</Description>
+    <PackageTags>authentication;hawk;hmac</PackageTags>
+  </PropertyGroup>
+
+</Project>

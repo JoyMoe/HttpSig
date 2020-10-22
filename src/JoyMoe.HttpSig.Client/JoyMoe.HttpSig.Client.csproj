@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Chino Chang</Authors>
+    <Description>Hawk authentication client library for .NET Core.</Description>
+    <PackageTags>authentication;hawk;hmac</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JoyMoe.HttpSig\JoyMoe.HttpSig.csproj" />
+  </ItemGroup>
+
+</Project>
