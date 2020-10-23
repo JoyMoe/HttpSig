@@ -6,7 +6,7 @@ using static JoyMoe.HttpSig.HttpSigConstants;
 
 namespace JoyMoe.HttpSig.Tests
 {
-    public class CavageDarftComplianceTests
+    public class CavageDraftComplianceTests
     {
         private readonly HttpSigRsaCredential _credential;
 
@@ -21,7 +21,7 @@ namespace JoyMoe.HttpSig.Tests
             {HeaderNames.ContentLength, "18"}
         };
 
-        public CavageDarftComplianceTests()
+        public CavageDraftComplianceTests()
         {
             _credential = new HttpSigRsaCredential
             {
