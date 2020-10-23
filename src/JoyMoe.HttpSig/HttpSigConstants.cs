@@ -37,21 +37,35 @@ namespace JoyMoe.HttpSig
             public const string EcdsaSha256 = "ecdsa-sha256";
         }
 
+        public static class HashAlgorithmNames
+        {
+            [Obsolete("Deprecated; SHA-1 not secure.")]
+            public const string Sha1 = "sha1";
+
+            public const string Sha256 = "sha256";
+
+            public const string Sha512 = "sha512";
+        }
+
         public static class HeaderNames
         {
             // Signing HTTP Messages specified Headers
 
-            public const string RequestTarget = "(request-target)";
             public const string Created = "(created)";
             public const string Expires = "(expires)";
+            public const string RequestTarget = "(request-target)";
+
+            public const string Signature = "signature";
 
             // HTTP Standard Headers
 
+            public const string Authorization = "authorization";
             public const string ContentLength = "content-length";
             public const string ContentType = "content-type";
             public const string Date = "date";
             public const string Digest = "digest";
             public const string Host = "host";
+            public const string WAuthenticate = "www-authenticate";
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static JoyMoe.HttpSig.HttpSigConstants;
 
@@ -31,7 +30,6 @@ namespace JoyMoe.HttpSig.Client
             var uri = request.RequestUri;
 
             request.Headers.Host ??= uri.Host;
-
             if (request.Headers.Host == null)
             {
                 throw new ArgumentException("No \"host\" specified in headers");
@@ -54,11 +52,8 @@ namespace JoyMoe.HttpSig.Client
                 {
                     var body = await request.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
-                    using var hash = SHA256.Create();
-                    var bytes = await hash.ComputeHashAsync(body).ConfigureAwait(false);
-
                     signature.Headers.Add(HeaderNames.Digest);
-                    request.Headers.Add(HeaderNames.Digest, $"sha-256={Convert.ToBase64String(bytes)}");
+                    request.Headers.Add(HeaderNames.Digest, DigestHelper.GenerateDigest(body, HashAlgorithmNames.Sha256));
                 }
             }
 
@@ -71,7 +66,7 @@ namespace JoyMoe.HttpSig.Client
 
             _credential.Sign(signature, headers);
 
-            request.Headers.TryAddWithoutValidation("Signature", signature);
+            request.Headers.TryAddWithoutValidation(HeaderNames.Signature, signature);
         }
     }
 }
