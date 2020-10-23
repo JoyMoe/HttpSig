@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using static JoyMoe.HttpSig.HttpSigConstants;
 
 namespace JoyMoe.HttpSig
 {
@@ -7,7 +7,7 @@ namespace JoyMoe.HttpSig
     {
         public string KeyId { get; set; } = null!;
 
-        public string? Algorithm { get; set; }
+        public string? Algorithm { get; set; } = Algorithms.Hs2019;
 
         public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
 
@@ -61,7 +61,7 @@ namespace JoyMoe.HttpSig
 
             if (signature.Headers.Count == 0)
             {
-                signature.Headers.Add(HttpSigConstants.HeaderNames.Created);
+                signature.Headers.Add(HeaderNames.Created);
             }
 
             if (string.IsNullOrWhiteSpace(signature.KeyId) ||
@@ -76,7 +76,7 @@ namespace JoyMoe.HttpSig
         public override string ToString()
         {
             return $"keyId=\"{KeyId}\", " +
-                   (string.IsNullOrWhiteSpace(Algorithm) ? "" : $"=\"{Algorithm}\", ") +
+                   (string.IsNullOrWhiteSpace(Algorithm) ? "" : $"algorithm=\"{Algorithm}\", ") +
                    $"created={Created.ToUnixTimeSeconds()}, " +
                    (Expires.HasValue ? $"expires={Expires.Value.ToUnixTimeSeconds()}, " : "") +
                    (Headers.Count > 0 ? $"headers=\"{Headers}\", " : "") +

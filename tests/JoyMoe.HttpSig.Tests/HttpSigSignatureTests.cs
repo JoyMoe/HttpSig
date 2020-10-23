@@ -36,6 +36,7 @@ namespace JoyMoe.HttpSig.Tests
             var signature = new HttpSigSignature
             {
                 KeyId = "test-key-a",
+                Algorithm = null,
                 Created = DateTimeOffset.FromUnixTimeSeconds(1402170695),
                 Headers =
                 {

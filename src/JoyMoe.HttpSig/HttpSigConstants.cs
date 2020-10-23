@@ -17,6 +17,8 @@ namespace JoyMoe.HttpSig
 
             public const string HmacSha512 = "hmac-sha512";
 
+            public const string EcdsaSha512 = "ecdsa-sha512";
+
             public const string Ed25519Ph= "ed25519ph";
 
             public const string Ed25519Ctx= "ed25519ctx";

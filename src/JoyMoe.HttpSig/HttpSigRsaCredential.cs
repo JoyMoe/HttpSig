@@ -11,9 +11,9 @@ namespace JoyMoe.HttpSig
 
         public string Algorithm { get; set; } = Algorithms.RsaSha512;
 
-        public virtual RSA? PrivateKey { get; set; } = null!;
+        public virtual RSA? PrivateKey { get; set; }
 
-        public virtual RSA? PublicKey { get; set; } = null!;
+        public virtual RSA? PublicKey { get; set; }
 
         public string Sign(string canonical)
         {
