@@ -7,7 +7,12 @@ namespace JoyMoe.HttpSig
     {
         public string KeyId { get; set; } = null!;
 
-        public string? Algorithm { get; set; } = Algorithms.Hs2019;
+        public string? Algorithm
+        {
+            get;
+            [Obsolete("Deprecated; specifying signature algorithm enables attack vector.")]
+            set;
+        } = AlgorithmNames.Hs2019;
 
         public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
 
@@ -38,7 +43,9 @@ namespace JoyMoe.HttpSig
                         signature.KeyId = value;
                         break;
                     case "algorithm":
+#pragma warning disable CS0618 // Use of obsolete symbol
                         signature.Algorithm = value;
+#pragma warning restore CS0618 // Use of obsolete symbol
                         break;
                     case "created":
                         _ = long.TryParse(value, out var cts);

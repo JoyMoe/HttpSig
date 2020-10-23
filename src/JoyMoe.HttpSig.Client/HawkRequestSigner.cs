@@ -25,7 +25,7 @@ namespace JoyMoe.HttpSig.Client
 
             if (request.RequestUri == null)
             {
-                throw new ArgumentException("Must specified RequestUri");
+                throw new ArgumentException("Must specify RequestUri");
             }
 
             var uri = request.RequestUri;
@@ -34,13 +34,12 @@ namespace JoyMoe.HttpSig.Client
 
             if (request.Headers.Host == null)
             {
-                throw new ArgumentException("Must specified Host in headers");
+                throw new ArgumentException("No \"host\" specified in headers");
             }
 
             var signature = new HttpSigSignature
             {
                 KeyId = _credential.KeyId,
-                Algorithm = Algorithms.Hs2019,
                 Headers =
                 {
                     HeaderNames.Created,

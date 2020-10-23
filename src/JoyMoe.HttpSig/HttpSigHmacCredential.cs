@@ -9,7 +9,7 @@ namespace JoyMoe.HttpSig
     {
         public string KeyId { get; set; } = null!;
 
-        public string Algorithm { get; set; } = Algorithms.HmacSha512;
+        public string Algorithm { get; set; } = AlgorithmNames.HmacSha512;
 
 #pragma warning disable CA1819 // Properties should not return arrays
         public virtual byte[]? Key { get; set; }

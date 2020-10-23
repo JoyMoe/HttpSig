@@ -27,7 +27,7 @@ namespace JoyMoe.HttpSig.Tests
             {
                 KeyId = "Test",
 #pragma warning disable CS0618 // Use of obsolete symbol
-                Algorithm = Algorithms.RsaSha256,
+                Algorithm = AlgorithmNames.RsaSha256,
 #pragma warning restore CS0618 // Use of obsolete symbol
                 PublicKey = RSA.Create()
             };

@@ -1,11 +1,11 @@
 using System;
 
-#pragma warning disable CA1034 // Do not nest type Algorithms. Alternatively, change its accessibility so that it is not externally visible.
+#pragma warning disable CA1034 // Nested types should not be visible
 namespace JoyMoe.HttpSig
 {
     public static class HttpSigConstants
     {
-        public static class Algorithms
+        public static class AlgorithmNames
         {
             // Active Algorithms
 
@@ -30,13 +30,10 @@ namespace JoyMoe.HttpSig
             [Obsolete("Deprecated; SHA-1 not secure.")]
             public const string RsaSha1 = "rsa-sha1";
 
-            [Obsolete("Deprecated; specifying signature algorithm enables attack vector.")]
             public const string RsaSha256 = "rsa-sha256";
 
-            [Obsolete("Deprecated; specifying signature algorithm enables attack vector.")]
             public const string HmacSha256 = "hmac-sha256";
 
-            [Obsolete("Deprecated; specifying signature algorithm enables attack vector.")]
             public const string EcdsaSha256 = "ecdsa-sha256";
         }
 
@@ -58,4 +55,4 @@ namespace JoyMoe.HttpSig
         }
     }
 }
-#pragma warning restore CA1034 // Do not nest type Algorithms. Alternatively, change its accessibility so that it is not externally visible.
+#pragma warning restore CA1034 // Nested types should not be visible

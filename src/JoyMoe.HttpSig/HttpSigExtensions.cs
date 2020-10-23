@@ -69,7 +69,7 @@ namespace JoyMoe.HttpSig
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(signature.Algorithm) && signature.Algorithm != Algorithms.Hs2019)
+            if (!string.IsNullOrWhiteSpace(signature.Algorithm) && signature.Algorithm != AlgorithmNames.Hs2019)
             {
                 if (signature.Algorithm != credential.Algorithm) return false;
             }

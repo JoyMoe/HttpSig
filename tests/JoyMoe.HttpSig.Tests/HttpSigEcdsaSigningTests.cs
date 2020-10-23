@@ -26,7 +26,7 @@ namespace JoyMoe.HttpSig.Tests
             _credential = new HttpSigEcdsaCredential
             {
                 KeyId = "test-key-a",
-                Algorithm = Algorithms.EcdsaSha512,
+                Algorithm = AlgorithmNames.EcdsaSha512,
                 PrivateKey = ECDsa.Create(),
                 PublicKey = ECDsa.Create()
             };
@@ -57,7 +57,7 @@ e2byLou/JpjJwwXysVL/0jd1hbM+vI7ToS4plvvQGMcJpCrKaWD+KNgH
 
             _credential.Sign(signature, _headers);
 
-            Assert.Equal(Algorithms.Hs2019, signature.Algorithm);
+            Assert.Equal(AlgorithmNames.Hs2019, signature.Algorithm);
             Assert.Equal("(created) (request-target)", signature.Headers);
             Assert.NotEmpty(signature.Signature);
 
@@ -85,7 +85,7 @@ e2byLou/JpjJwwXysVL/0jd1hbM+vI7ToS4plvvQGMcJpCrKaWD+KNgH
 
             _credential.Sign(signature, _headers);
 
-            Assert.Equal(Algorithms.Hs2019, signature.Algorithm);
+            Assert.Equal(AlgorithmNames.Hs2019, signature.Algorithm);
             Assert.Equal("(request-target) (created) host date content-type digest content-length", signature.Headers);
             Assert.NotEmpty(signature.Signature);
 
