@@ -1,3 +1,6 @@
+using System;
+using System.Security.Cryptography;
+using System.Text;
 using static JoyMoe.HttpSig.HttpSigConstants;
 
 namespace JoyMoe.HttpSig
@@ -14,12 +17,23 @@ namespace JoyMoe.HttpSig
 
         public string Sign(string canonical)
         {
-            throw new System.NotImplementedException();
+            using var hash = HMAC.Create(GetHashAlgorithm());
+
+            hash.Key = Key;
+
+            var signature = hash.ComputeHash(Encoding.UTF8.GetBytes(canonical));
+
+            return Convert.ToBase64String(signature);
         }
 
         public bool Verify(string canonical, string signature)
         {
-            throw new System.NotImplementedException();
+            return signature == Sign(canonical);
+        }
+
+        private string GetHashAlgorithm()
+        {
+            return Algorithm.Replace("-", "", StringComparison.InvariantCulture).ToUpperInvariant();
         }
     }
 }

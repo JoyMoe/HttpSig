@@ -10,7 +10,7 @@ namespace JoyMoe.HttpSig.Tests
     {
         private readonly HttpSigRsaCredential _credential;
 
-        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>
+        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
         {
             {HeaderNames.Created, "1402170695"},
             {HeaderNames.RequestTarget, "post /foo?param=value&pet=dog"},
@@ -86,8 +86,7 @@ EQeNC8fHGg4UXU8mhHnSBt3EA10qQJfRDs15M38eG2cYwB1PZpDHScDnDA0=
 
             _credential.Sign(signature, _headers);
 
-            // Assert.Equal("e3y37nxAoeuXw2KbaIxE2d9jpE7Z9okgizg6QbD2Z7fUVUvog+ZTKKLRBnhNglVIY6fAaYlHwx7ZAXXdBVF8gjWBPL6U9zRrB4PFzjoLSxHaqsvS0ZK9FRxpenptgukaVQ1aeva3PE1aD6zZ93df2lFIFXGDefYCQ+M/SrDGQOFvaVykEkte5mO6zQZ/HpokjMKvilfSMJS+vbvC1GJItQpjs636Db+7zB2W1BurkGxtQdCLDXuIDg4S8pPSDihkch/dUzL2BpML3PXGKVXwHOUkVG6Q2ge07IYdzya6N1fIVA9eKI1Y47HT35QliVAxZgE0EZLo8mxq19ReIVvuFg==", signature.Signature);
-            // Assert.Equal(@"keyId=""test-key-a"", created=1402170695, headers=""(created) (request-target)"",signature=""e3y37nxAoeuXw2KbaIxE2d9jpE7Z9okgizg6QbD2Z7fUVUvog+ZTKKLRBnhNglVIY6fAaYlHwx7ZAXXdBVF8gjWBPL6U9zRrB4PFzjoLSxHaqsvS0ZK9FRxpenptgukaVQ1aeva3PE1aD6zZ93df2lFIFXGDefYCQ+M/SrDGQOFvaVykEkte5mO6zQZ/HpokjMKvilfSMJS+vbvC1GJItQpjs636Db+7zB2W1BurkGxtQdCLDXuIDg4S8pPSDihkch/dUzL2BpML3PXGKVXwHOUkVG6Q2ge07IYdzya6N1fIVA9eKI1Y47HT35QliVAxZgE0EZLo8mxq19ReIVvuFg==""", signature);
+            Assert.Equal(Algorithms.Hs2019, signature.Algorithm);
             Assert.Equal("(created) (request-target)", signature.Headers);
             Assert.NotEmpty(signature.Signature);
         }
@@ -108,14 +107,13 @@ EQeNC8fHGg4UXU8mhHnSBt3EA10qQJfRDs15M38eG2cYwB1PZpDHScDnDA0=
                     HeaderNames.Date,
                     HeaderNames.ContentType,
                     HeaderNames.Digest,
-                    HeaderNames.ContentLength,
+                    HeaderNames.ContentLength
                 }
             };
 
             _credential.Sign(signature, _headers);
 
-            // Assert.Equal("KXUj1H3ZOhv3Nk4xlRLTn4bOMlMOmFiud3VXrMa9MaLCxnVmrqOX5BulRvB65YW/wQp0oT/nNQpXgOYeY8ovmHlpkRyz5buNDqoOpRsCpLGxsIJ9cX8XVsM9jy+Q1+RIlD9wfWoPHhqhoXt35ZkasuIDPF/AETuObs9QydlsqONwbK+TdQguDK/8Va1Pocl6wK1uLwqcXlxhPEb55EmdYB9pddDyHTADING7K4qMwof2mC3t8Pb0yoLZoZX5a4Or4FrCCKK/9BHAhq/RsVk0dTENMbTB4i7cHvKQu+o9xuYWuxyvBa0Z6NdOb0di70cdrSDEsL5Gz7LBY5J2N9KdGg==", signature.Signature);
-            // Assert.Equal(@"Signature: keyId=""test-key-a"", algorithm=""hs2019"", created=1402170695, headers=""(request-target) (created) host date content-type digest content-length"",signature=""KXUj1H3ZOhv3Nk4xlRLTn4bOMlMOmFiud3VXrMa9MaLCxnVmrqOX5BulRvB65YW/wQp0oT/nNQpXgOYeY8ovmHlpkRyz5buNDqoOpRsCpLGxsIJ9cX8XVsM9jy+Q1+RIlD9wfWoPHhqhoXt35ZkasuIDPF/AETuObs9QydlsqONwbK+TdQguDK/8Va1Pocl6wK1uLwqcXlxhPEb55EmdYB9pddDyHTADING7K4qMwof2mC3t8Pb0yoLZoZX5a4Or4FrCCKK/9BHAhq/RsVk0dTENMbTB4i7cHvKQu+o9xuYWuxyvBa0Z6NdOb0di70cdrSDEsL5Gz7LBY5J2N9KdGg==""", signature);
+            Assert.Equal(Algorithms.Hs2019, signature.Algorithm);
             Assert.Equal("(request-target) (created) host date content-type digest content-length", signature.Headers);
             Assert.NotEmpty(signature.Signature);
         }
