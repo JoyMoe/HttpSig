@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using Xunit;
 using static JoyMoe.HttpSig.HttpSigConstants;
@@ -9,7 +10,7 @@ namespace JoyMoe.HttpSig.Tests
     {
         private readonly HttpSigRsaCredential _credential;
 
-        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>
+        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
         {
             {HeaderNames.Created, "1402170695"},
             {HeaderNames.RequestTarget, "post /foo?param=value&pet=dog"},

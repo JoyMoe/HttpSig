@@ -63,7 +63,8 @@ namespace JoyMoe.HttpSig.Client
                 }
             }
 
-            var headers = request.Headers.ToDictionary(h => h.Key, h => h.Value.First());
+            var headers = request.Headers
+                .ToDictionary(h => h.Key, h => h.Value.First(), StringComparer.InvariantCultureIgnoreCase);
 
 #pragma warning disable CA1308 // Normalize strings to uppercase
             headers[HeaderNames.RequestTarget] = $"{request.Method.Method.ToLowerInvariant()} {uri.AbsolutePath}{uri.Query}";

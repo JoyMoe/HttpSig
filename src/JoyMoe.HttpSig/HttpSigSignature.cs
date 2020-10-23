@@ -13,7 +13,7 @@ namespace JoyMoe.HttpSig
 
         public DateTimeOffset? Expires { get; set; }
 
-        public List<string> Headers { get; } = new List<string>();
+        public HttpSigHeaderList Headers { get; } = new HttpSigHeaderList();
 
         public string Signature { get; set; } = null!;
 
@@ -79,7 +79,7 @@ namespace JoyMoe.HttpSig
                    (string.IsNullOrWhiteSpace(Algorithm) ? "" : $"=\"{Algorithm}\", ") +
                    $"created={Created.ToUnixTimeSeconds()}, " +
                    (Expires.HasValue ? $"expires={Expires.Value.ToUnixTimeSeconds()}, " : "") +
-                   (Headers.Count > 0 ? $"headers=\"{string.Join(' ', Headers)}\", " : "") +
+                   (Headers.Count > 0 ? $"headers=\"{Headers}\", " : "") +
                    $"signature=\"{Signature}\"";
         }
 

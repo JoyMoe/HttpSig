@@ -84,14 +84,7 @@ namespace JoyMoe.HttpSig
             return credential.Verify(canonical, signature.Signature);
         }
 
-        private static void TryAdd<T>(this ICollection<T> list, T item)
-        {
-            if (list.Contains(item)) return;
-
-            list.Add(item);
-        }
-
-        private static string BuildCanonicalString(IEnumerable<string> requirements, Dictionary<string, string> headers)
+        private static string BuildCanonicalString(IEnumerable<string> requirements, IDictionary<string, string> headers)
         {
             var sb = new StringBuilder();
 
