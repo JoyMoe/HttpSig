@@ -102,10 +102,10 @@ namespace JoyMoe.HttpSig
                     throw new ArgumentException($"No \"{h}\" specified in headers");
                 }
 
-                sb.Append($"{h}: {headers[h]}");
+                sb.Append($"{h}: {headers[h]}\n");
             }
 
-            return sb.ToString();
+            return sb.ToString().TrimEnd();
         }
     }
 }

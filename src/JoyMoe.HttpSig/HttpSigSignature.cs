@@ -59,6 +59,11 @@ namespace JoyMoe.HttpSig
                 }
             }
 
+            if (signature.Headers.Count == 0)
+            {
+                signature.Headers.Add(HttpSigConstants.HeaderNames.Created);
+            }
+
             if (string.IsNullOrWhiteSpace(signature.KeyId) ||
                 string.IsNullOrWhiteSpace(signature.Signature))
             {
