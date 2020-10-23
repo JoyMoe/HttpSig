@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Xunit;
@@ -17,7 +18,7 @@ namespace JoyMoe.HttpSig.Tests
             {HeaderNames.Date, "Tue, 07 Jun 2014 20:51:35 GMT"},
             {HeaderNames.ContentType, "application/json"},
             {HeaderNames.Digest, "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
-            {HeaderNames.ContentLength, "18"},
+            {HeaderNames.ContentLength, "18"}
         };
 
         public HttpSigRsaSigningTests()
@@ -25,8 +26,7 @@ namespace JoyMoe.HttpSig.Tests
             _credential = new HttpSigRsaCredential
             {
                 KeyId = "test-key-a",
-                Algorithm = Algorithms.RsaSha512,
-                // PrivateKey = RSA.Create(),
+                PrivateKey = RSA.Create(),
                 PublicKey = RSA.Create()
             };
 
@@ -69,48 +69,56 @@ EQeNC8fHGg4UXU8mhHnSBt3EA10qQJfRDs15M38eG2cYwB1PZpDHScDnDA0=
 */
         }
 
-        // [Fact]
-        // public void MinimalRecommendedSignatureGenerationTests()
-        // {
-        //     var signature = new HttpSigSignature
-        //     {
-        //         Created = DateTimeOffset.FromUnixTimeSeconds(1402170695),
-        //         Headers =
-        //         {
-        //             HeaderNames.Created,
-        //             HeaderNames.RequestTarget
-        //         }
-        //     };
-        //
-        //     _credential.Sign(signature, _headers);
-        //
-        //     Assert.Equal("e3y37nxAoeuXw2KbaIxE2d9jpE7Z9okgizg6QbD2Z7fUVUvog+ZTKKLRBnhNglVIY6fAaYlHwx7ZAXXdBVF8gjWBPL6U9zRrB4PFzjoLSxHaqsvS0ZK9FRxpenptgukaVQ1aeva3PE1aD6zZ93df2lFIFXGDefYCQ+M/SrDGQOFvaVykEkte5mO6zQZ/HpokjMKvilfSMJS+vbvC1GJItQpjs636Db+7zB2W1BurkGxtQdCLDXuIDg4S8pPSDihkch/dUzL2BpML3PXGKVXwHOUkVG6Q2ge07IYdzya6N1fIVA9eKI1Y47HT35QliVAxZgE0EZLo8mxq19ReIVvuFg==", signature.Signature);
-        //     Assert.Equal(@"keyId=""test-key-a"", created=1402170695, headers=""(created) (request-target)"",signature=""e3y37nxAoeuXw2KbaIxE2d9jpE7Z9okgizg6QbD2Z7fUVUvog+ZTKKLRBnhNglVIY6fAaYlHwx7ZAXXdBVF8gjWBPL6U9zRrB4PFzjoLSxHaqsvS0ZK9FRxpenptgukaVQ1aeva3PE1aD6zZ93df2lFIFXGDefYCQ+M/SrDGQOFvaVykEkte5mO6zQZ/HpokjMKvilfSMJS+vbvC1GJItQpjs636Db+7zB2W1BurkGxtQdCLDXuIDg4S8pPSDihkch/dUzL2BpML3PXGKVXwHOUkVG6Q2ge07IYdzya6N1fIVA9eKI1Y47HT35QliVAxZgE0EZLo8mxq19ReIVvuFg==""", signature);
-        // }
-        //
-        // [Fact]
-        // public void FullSignatureGenerationTests()
-        // {
-        //     var signature = new HttpSigSignature
-        //     {
-        //         Created = DateTimeOffset.FromUnixTimeSeconds(1402170695),
-        //         Headers =
-        //         {
-        //             HeaderNames.Created,
-        //             HeaderNames.RequestTarget,
-        //             HeaderNames.Host,
-        //             HeaderNames.Date,
-        //             HeaderNames.ContentType,
-        //             HeaderNames.Digest,
-        //             HeaderNames.ContentLength,
-        //         }
-        //     };
-        //
-        //     _credential.Sign(signature, _headers);
-        //
-        //     Assert.Equal("KXUj1H3ZOhv3Nk4xlRLTn4bOMlMOmFiud3VXrMa9MaLCxnVmrqOX5BulRvB65YW/wQp0oT/nNQpXgOYeY8ovmHlpkRyz5buNDqoOpRsCpLGxsIJ9cX8XVsM9jy+Q1+RIlD9wfWoPHhqhoXt35ZkasuIDPF/AETuObs9QydlsqONwbK+TdQguDK/8Va1Pocl6wK1uLwqcXlxhPEb55EmdYB9pddDyHTADING7K4qMwof2mC3t8Pb0yoLZoZX5a4Or4FrCCKK/9BHAhq/RsVk0dTENMbTB4i7cHvKQu+o9xuYWuxyvBa0Z6NdOb0di70cdrSDEsL5Gz7LBY5J2N9KdGg==", signature.Signature);
-        //     Assert.Equal(@"Signature: keyId=""test-key-a"", algorithm=""hs2019"", created=1402170695, headers=""(request-target) (created) host date content-type digestcontent-length"",signature=""KXUj1H3ZOhv3Nk4xlRLTn4bOMlMOmFiud3VXrMa9MaLCxnVmrqOX5BulRvB65YW/wQp0oT/nNQpXgOYeY8ovmHlpkRyz5buNDqoOpRsCpLGxsIJ9cX8XVsM9jy+Q1+RIlD9wfWoPHhqhoXt35ZkasuIDPF/AETuObs9QydlsqONwbK+TdQguDK/8Va1Pocl6wK1uLwqcXlxhPEb55EmdYB9pddDyHTADING7K4qMwof2mC3t8Pb0yoLZoZX5a4Or4FrCCKK/9BHAhq/RsVk0dTENMbTB4i7cHvKQu+o9xuYWuxyvBa0Z6NdOb0di70cdrSDEsL5Gz7LBY5J2N9KdGg==""", signature);
-        // }
+        [Fact]
+        public void MinimalRecommendedSignatureGenerationTests()
+        {
+            _credential.Algorithm = Algorithms.RsaSha512;
+
+            var signature = new HttpSigSignature
+            {
+                Created = DateTimeOffset.FromUnixTimeSeconds(1402170695),
+                Headers =
+                {
+                    HeaderNames.Created,
+                    HeaderNames.RequestTarget
+                }
+            };
+
+            _credential.Sign(signature, _headers);
+
+            // Assert.Equal("e3y37nxAoeuXw2KbaIxE2d9jpE7Z9okgizg6QbD2Z7fUVUvog+ZTKKLRBnhNglVIY6fAaYlHwx7ZAXXdBVF8gjWBPL6U9zRrB4PFzjoLSxHaqsvS0ZK9FRxpenptgukaVQ1aeva3PE1aD6zZ93df2lFIFXGDefYCQ+M/SrDGQOFvaVykEkte5mO6zQZ/HpokjMKvilfSMJS+vbvC1GJItQpjs636Db+7zB2W1BurkGxtQdCLDXuIDg4S8pPSDihkch/dUzL2BpML3PXGKVXwHOUkVG6Q2ge07IYdzya6N1fIVA9eKI1Y47HT35QliVAxZgE0EZLo8mxq19ReIVvuFg==", signature.Signature);
+            // Assert.Equal(@"keyId=""test-key-a"", created=1402170695, headers=""(created) (request-target)"",signature=""e3y37nxAoeuXw2KbaIxE2d9jpE7Z9okgizg6QbD2Z7fUVUvog+ZTKKLRBnhNglVIY6fAaYlHwx7ZAXXdBVF8gjWBPL6U9zRrB4PFzjoLSxHaqsvS0ZK9FRxpenptgukaVQ1aeva3PE1aD6zZ93df2lFIFXGDefYCQ+M/SrDGQOFvaVykEkte5mO6zQZ/HpokjMKvilfSMJS+vbvC1GJItQpjs636Db+7zB2W1BurkGxtQdCLDXuIDg4S8pPSDihkch/dUzL2BpML3PXGKVXwHOUkVG6Q2ge07IYdzya6N1fIVA9eKI1Y47HT35QliVAxZgE0EZLo8mxq19ReIVvuFg==""", signature);
+            Assert.Equal("(created) (request-target)", signature.Headers);
+            Assert.NotEmpty(signature.Signature);
+        }
+
+        [Fact]
+        public void FullSignatureGenerationTests()
+        {
+            _credential.Algorithm = Algorithms.RsaSha512;
+
+            var signature = new HttpSigSignature
+            {
+                Created = DateTimeOffset.FromUnixTimeSeconds(1402170695),
+                Headers =
+                {
+                    HeaderNames.RequestTarget,
+                    HeaderNames.Created,
+                    HeaderNames.Host,
+                    HeaderNames.Date,
+                    HeaderNames.ContentType,
+                    HeaderNames.Digest,
+                    HeaderNames.ContentLength,
+                }
+            };
+
+            _credential.Sign(signature, _headers);
+
+            // Assert.Equal("KXUj1H3ZOhv3Nk4xlRLTn4bOMlMOmFiud3VXrMa9MaLCxnVmrqOX5BulRvB65YW/wQp0oT/nNQpXgOYeY8ovmHlpkRyz5buNDqoOpRsCpLGxsIJ9cX8XVsM9jy+Q1+RIlD9wfWoPHhqhoXt35ZkasuIDPF/AETuObs9QydlsqONwbK+TdQguDK/8Va1Pocl6wK1uLwqcXlxhPEb55EmdYB9pddDyHTADING7K4qMwof2mC3t8Pb0yoLZoZX5a4Or4FrCCKK/9BHAhq/RsVk0dTENMbTB4i7cHvKQu+o9xuYWuxyvBa0Z6NdOb0di70cdrSDEsL5Gz7LBY5J2N9KdGg==", signature.Signature);
+            // Assert.Equal(@"Signature: keyId=""test-key-a"", algorithm=""hs2019"", created=1402170695, headers=""(request-target) (created) host date content-type digest content-length"",signature=""KXUj1H3ZOhv3Nk4xlRLTn4bOMlMOmFiud3VXrMa9MaLCxnVmrqOX5BulRvB65YW/wQp0oT/nNQpXgOYeY8ovmHlpkRyz5buNDqoOpRsCpLGxsIJ9cX8XVsM9jy+Q1+RIlD9wfWoPHhqhoXt35ZkasuIDPF/AETuObs9QydlsqONwbK+TdQguDK/8Va1Pocl6wK1uLwqcXlxhPEb55EmdYB9pddDyHTADING7K4qMwof2mC3t8Pb0yoLZoZX5a4Or4FrCCKK/9BHAhq/RsVk0dTENMbTB4i7cHvKQu+o9xuYWuxyvBa0Z6NdOb0di70cdrSDEsL5Gz7LBY5J2N9KdGg==""", signature);
+            Assert.Equal("(request-target) (created) host date content-type digest content-length", signature.Headers);
+            Assert.NotEmpty(signature.Signature);
+        }
 
         [Fact]
         public void MinimalRequiredSignatureVerificationTests()
@@ -133,6 +141,19 @@ EQeNC8fHGg4UXU8mhHnSBt3EA10qQJfRDs15M38eG2cYwB1PZpDHScDnDA0=
 #pragma warning restore CS0618 // Use of obsolete symbol
 
             var signature = HttpSigSignature.Parse(@"keyId=""test-key-a"", headers=""date"", signature=""HtXycCl97RBVkZi66ADKnC9c5eSSlb57GnQ4KFqNZplOpNfxqk62JzZ484jXgLvoOTRaKfR4hwyxlcyb+BWkVasApQovBSdit9Ml/YmN2IvJDPncrlhPDVDv36Z9/DiSO+RNHD7iLXugdXo1+MGRimW1RmYdenl/ITeb7rjfLZ4b9VNnLFtVWwrjhAiwIqeLjodVImzVc5srrk19HMZNuUejK6I3/MyN3+3U8tIRW4LWzx6ZgGZUaEEP0aBlBkt7Fj0Tt5/P5HNW/Sa/m8smxbOHnwzAJDa10PyjzdIbywlnWIIWtZKPPsoVoKVopUWEU3TNhpWmaVhFrUL/O6SN3w==""");
+
+            var passed = _credential.Verify(signature, _headers);
+            Assert.True(passed);
+        }
+
+        [Fact]
+        public void MinimalRequiredSha256SignatureVerificationTests()
+        {
+#pragma warning disable CS0618 // Use of obsolete symbol
+            _credential.Algorithm = Algorithms.RsaSha256;
+#pragma warning restore CS0618 // Use of obsolete symbol
+
+            var signature = HttpSigSignature.Parse(@"algorithm=""rsa-sha256"", keyId=""test-key-a"", headers=""date"", signature=""HtXycCl97RBVkZi66ADKnC9c5eSSlb57GnQ4KFqNZplOpNfxqk62JzZ484jXgLvoOTRaKfR4hwyxlcyb+BWkVasApQovBSdit9Ml/YmN2IvJDPncrlhPDVDv36Z9/DiSO+RNHD7iLXugdXo1+MGRimW1RmYdenl/ITeb7rjfLZ4b9VNnLFtVWwrjhAiwIqeLjodVImzVc5srrk19HMZNuUejK6I3/MyN3+3U8tIRW4LWzx6ZgGZUaEEP0aBlBkt7Fj0Tt5/P5HNW/Sa/m8smxbOHnwzAJDa10PyjzdIbywlnWIIWtZKPPsoVoKVopUWEU3TNhpWmaVhFrUL/O6SN3w==""");
 
             var passed = _credential.Verify(signature, _headers);
             Assert.True(passed);

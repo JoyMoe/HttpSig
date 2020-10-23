@@ -17,7 +17,7 @@ namespace JoyMoe.HttpSig.Tests
             {HeaderNames.Date, "Sun, 05 Jan 2014 21:31:40 GMT"},
             {HeaderNames.ContentType, "application/json"},
             {HeaderNames.Digest, "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
-            {HeaderNames.ContentLength, "18"},
+            {HeaderNames.ContentLength, "18"}
         };
 
         public CavageDarftComplianceTests()
