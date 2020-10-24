@@ -66,13 +66,13 @@ namespace JoyMoe.HttpSig
                 return false;
             }
 
-            var hash = header.Substring(0, algorithm.Length + 1);
+            var hash = header.Substring(algorithm.Length + 1);
             if (string.IsNullOrWhiteSpace(hash))
             {
                 return false;
             }
 
-            return hash == digest.Substring(0, algorithm.Length + 1);
+            return hash == digest.Substring(algorithm.Length + 1);
         }
     }
 }

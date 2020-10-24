@@ -13,7 +13,7 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests
     public class HttpSigMiddlewareTests
     {
         [Fact]
-        public async Task SignedRequestShouldGetForbidden()
+        public async Task UnsignedRequestShouldGetForbidden()
         {
             using var host = await TestHostBuilder.BuildAsync().ConfigureAwait(false);
 
@@ -24,7 +24,7 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests
         }
 
         [Fact]
-        public async Task SignedRequestShouldGetSignedResponse()
+        public async Task SignedGetRequestShouldGetSignedResponse()
         {
             var signer = new HttpSigRequestSigner(MockSigCredentialProvider.Credential);
             var verifier = new HttpSigResponseVerifier(new Dictionary<string, IHttpSigCredential>
@@ -40,6 +40,37 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests
             {
                 RequestUri = new Uri("https://example.com/Test/Signed"),
                 Method = HttpMethod.Get
+            };
+
+            await signer.SignAsync(message).ConfigureAwait(false);
+
+            var response = await client.SendAsync(message).ConfigureAwait(false);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var passed = await verifier.VerifyAsync(response).ConfigureAwait(false);
+            Assert.True(passed);
+
+            Assert.Equal("Hello World!", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        }
+
+        [Fact]
+        public async Task SignedPostRequestShouldGetSignedResponse()
+        {
+            var signer = new HttpSigRequestSigner(MockSigCredentialProvider.Credential);
+            var verifier = new HttpSigResponseVerifier(new Dictionary<string, IHttpSigCredential>
+            {
+                {MockSigCredentialProvider.Credential.KeyId, MockSigCredentialProvider.Credential}
+            });
+
+            using var host = await TestHostBuilder.BuildAsync().ConfigureAwait(false);
+
+            var client = host.GetTestClient();
+
+            using var message = new HttpRequestMessage
+            {
+                RequestUri = new Uri("https://example.com/Test/Signed"),
+                Method = HttpMethod.Post,
+                Content = new StringContent("Hello")
             };
 
             await signer.SignAsync(message).ConfigureAwait(false);

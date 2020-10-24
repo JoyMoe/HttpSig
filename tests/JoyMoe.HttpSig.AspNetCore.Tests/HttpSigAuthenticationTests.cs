@@ -13,7 +13,7 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests
     public class HttpSigAuthenticationTests
     {
         [Fact]
-        public async Task SignedRequestShouldGetUnauthorized()
+        public async Task UnsignedRequestShouldGetUnauthorized()
         {
             using var host = await TestHostBuilder.BuildAsync().ConfigureAwait(false);
 
@@ -25,7 +25,7 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests
         }
 
         [Fact]
-        public async Task SignedRequestShouldGetOkResponse()
+        public async Task SignedGetRequestShouldGetOkResponse()
         {
             var signer = new HttpSigRequestSigner(MockSigCredentialProvider.Credential);
 
@@ -37,6 +37,30 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests
             {
                 RequestUri = new Uri("https://example.com/Test/Authorized"),
                 Method = HttpMethod.Get
+            };
+
+            await signer.SignAsync(message).ConfigureAwait(false);
+
+            var response = await client.SendAsync(message).ConfigureAwait(false);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Assert.Equal("Hello World!", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+        }
+
+        [Fact]
+        public async Task SignedPostRequestShouldGetOkResponse()
+        {
+            var signer = new HttpSigRequestSigner(MockSigCredentialProvider.Credential);
+
+            using var host = await TestHostBuilder.BuildAsync().ConfigureAwait(false);
+
+            var client = host.GetTestClient();
+
+            using var message = new HttpRequestMessage
+            {
+                RequestUri = new Uri("https://example.com/Test/Authorized"),
+                Method = HttpMethod.Post,
+                Content = new StringContent("Hello")
             };
 
             await signer.SignAsync(message).ConfigureAwait(false);

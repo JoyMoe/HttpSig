@@ -9,7 +9,16 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests.Host
     {
         [HttpSigSignature]
         [HttpGet("Signed")]
-        public IActionResult Middleware()
+        public IActionResult MiddlewareGet()
+        {
+            Response.Headers.Add(HeaderNames.XHttpSigKeyId, MockSigCredentialProvider.Credential.KeyId);
+
+            return Ok("Hello World!");
+        }
+
+        [HttpSigSignature]
+        [HttpPost("Signed")]
+        public IActionResult MiddlewarePost()
         {
             Response.Headers.Add(HeaderNames.XHttpSigKeyId, MockSigCredentialProvider.Credential.KeyId);
 
@@ -18,7 +27,14 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests.Host
 
         [Authorize]
         [HttpGet("Authorized")]
-        public IActionResult Authentication()
+        public IActionResult AuthenticationGet()
+        {
+            return Ok("Hello World!");
+        }
+
+        [Authorize]
+        [HttpPost("Authorized")]
+        public IActionResult AuthenticationPost()
         {
             return Ok("Hello World!");
         }

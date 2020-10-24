@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using static JoyMoe.HttpSig.HttpSigConstants;
@@ -74,6 +75,8 @@ namespace JoyMoe.HttpSig.AspNetCore
 
             if (headers.ContainsKey(HeaderNames.Digest))
             {
+                Request.EnableBuffering();
+
                 var digest = headers[HeaderNames.Digest];
 
                 if (!await DigestHelper.CheckDigestAsync(Request.Body, digest).ConfigureAwait(false))
