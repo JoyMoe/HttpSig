@@ -50,9 +50,10 @@ namespace JoyMoe.HttpSig.Client
                 if (request.Content != null)
                 {
                     var body = await request.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    var digest = await DigestHelper.GenerateDigestAsync(body, HashAlgorithmNames.Sha256).ConfigureAwait(false);
 
                     signature.Headers.Add(HeaderNames.Digest);
-                    request.Headers.Add(HeaderNames.Digest, DigestHelper.GenerateDigest(body, HashAlgorithmNames.Sha256));
+                    request.Headers.Add(HeaderNames.Digest, digest);
                 }
             }
 

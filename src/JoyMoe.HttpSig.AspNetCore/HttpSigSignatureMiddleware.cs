@@ -107,7 +107,7 @@ namespace JoyMoe.HttpSig.AspNetCore
                 request.EnableBuffering();
 
                 var digest = headers[HeaderNames.Digest];
-                if (!DigestHelper.CheckDigest(request.Body, digest))
+                if (!await DigestHelper.CheckDigestAsync(request.Body, digest).ConfigureAwait(false))
                 {
                     return false;
                 }
@@ -165,7 +165,7 @@ namespace JoyMoe.HttpSig.AspNetCore
                 response.Headers.Add(HeaderNames.Date, date);
             }
 
-            var digest = DigestHelper.GenerateDigest(response.Body, HashAlgorithmNames.Sha256);
+            var digest = await DigestHelper.GenerateDigestAsync(response.Body, HashAlgorithmNames.Sha256).ConfigureAwait(false);
             response.Headers.Remove(HeaderNames.Digest);
             response.Headers.Add(HeaderNames.Digest, digest);
 

@@ -1,12 +1,13 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace JoyMoe.HttpSig
 {
     public static class DigestHelper
     {
-        public static string? GenerateDigest(Stream body, string algorithm)
+        public static async Task<string?> GenerateDigestAsync(Stream body, string algorithm)
         {
             if (body == null)
             {
@@ -26,7 +27,7 @@ namespace JoyMoe.HttpSig
                 return null;
             }
 
-            var bytes = hash.ComputeHash(body);
+            var bytes = await hash.ComputeHashAsync(body).ConfigureAwait(false);
 
             body.Position = 0;
 
@@ -35,7 +36,7 @@ namespace JoyMoe.HttpSig
 #pragma warning restore CA1308 // Normalize strings to uppercase
         }
 
-        public static bool CheckDigest(Stream body, string header)
+        public static async Task<bool> CheckDigestAsync(Stream body, string header)
         {
             if (body == null)
             {
@@ -59,7 +60,7 @@ namespace JoyMoe.HttpSig
                 return false;
             }
 
-            var digest = GenerateDigest(body, algorithm);
+            var digest = await GenerateDigestAsync(body, algorithm).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(digest))
             {
                 return false;

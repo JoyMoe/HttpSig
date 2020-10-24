@@ -54,7 +54,7 @@ namespace JoyMoe.HttpSig.Client
                 var digest = headers[HeaderNames.Digest];
 
                 var body = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                if (!DigestHelper.CheckDigest(body, digest))
+                if (!await DigestHelper.CheckDigestAsync(body, digest).ConfigureAwait(false))
                 {
                     return false;
                 }

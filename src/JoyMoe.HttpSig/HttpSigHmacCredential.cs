@@ -17,7 +17,16 @@ namespace JoyMoe.HttpSig
 
         public string Sign(string canonical)
         {
+            if (Key == null)
+            {
+                throw new ArgumentException("Must specify Key");
+            }
+
             using var hash = HMAC.Create(GetHashAlgorithm());
+            if (hash == null)
+            {
+                throw new ArgumentException("Invalid Algorithm");
+            }
 
             hash.Key = Key;
 

@@ -76,7 +76,7 @@ namespace JoyMoe.HttpSig.AspNetCore
             {
                 var digest = headers[HeaderNames.Digest];
 
-                if (!DigestHelper.CheckDigest(Request.Body, digest))
+                if (!await DigestHelper.CheckDigestAsync(Request.Body, digest).ConfigureAwait(false))
                 {
                     return AuthenticateResult.Fail("Invalid digest header");
                 }
