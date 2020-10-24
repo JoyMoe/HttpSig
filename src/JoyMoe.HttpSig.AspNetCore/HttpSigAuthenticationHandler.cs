@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -65,6 +66,12 @@ namespace JoyMoe.HttpSig.AspNetCore
             var headers = Request.Headers
                 .ToDictionary(h => h.Key, h => h.Value.First(), StringComparer.InvariantCultureIgnoreCase);
 
+            headers[HeaderNames.Created] = signature.Created.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture);
+            headers[HeaderNames.Expires] = signature.Expires?.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture) ?? "";
+#pragma warning disable CA1308 // Normalize strings to uppercase
+            headers[HeaderNames.RequestTarget] = $"{Request.Method.ToLowerInvariant()} {Request.Path.Value!}{Request.QueryString}";
+#pragma warning restore CA1308 // Normalize strings to uppercase
+
             if (headers.ContainsKey(HeaderNames.Digest))
             {
                 var digest = headers[HeaderNames.Digest];
@@ -103,7 +110,7 @@ namespace JoyMoe.HttpSig.AspNetCore
 
         protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
         {
-            Response.Headers[HeaderNames.WAuthenticate] = $"{HeaderNames.Signature}";
+            Response.Headers[HeaderNames.WwwAuthenticate] = HeaderNames.Signature;
 
             await base.HandleChallengeAsync(properties).ConfigureAwait(false);
         }

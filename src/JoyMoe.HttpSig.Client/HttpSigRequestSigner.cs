@@ -37,7 +37,6 @@ namespace JoyMoe.HttpSig.Client
 
             var signature = new HttpSigSignature
             {
-                KeyId = _credential.KeyId,
                 Headers =
                 {
                     HeaderNames.Created,
@@ -66,6 +65,7 @@ namespace JoyMoe.HttpSig.Client
 
             _credential.Sign(signature, headers);
 
+            request.Headers.TryAddWithoutValidation(HeaderNames.Authorization, $"{HeaderNames.Signature} {signature}");
             request.Headers.TryAddWithoutValidation(HeaderNames.Signature, signature);
         }
     }

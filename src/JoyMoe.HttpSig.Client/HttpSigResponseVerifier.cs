@@ -29,29 +29,11 @@ namespace JoyMoe.HttpSig.Client
                 return false;
             }
 
-            var separator = header.IndexOf(' ', StringComparison.InvariantCulture);
-            if (separator < 0)
-            {
-                return false;
-            }
-
-            var scheme = header.Substring(0, separator);
-            if (!HeaderNames.Signature.Equals(scheme, StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-
-            var parameters = header.Substring(separator + 1);
-            if (string.IsNullOrWhiteSpace(parameters))
-            {
-                return false;
-            }
-
             HttpSigSignature signature;
 
             try
             {
-                signature = HttpSigSignature.Parse(parameters);
+                signature = HttpSigSignature.Parse(header);
             }
             catch (ArgumentException)
             {

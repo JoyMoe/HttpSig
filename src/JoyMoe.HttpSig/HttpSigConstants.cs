@@ -57,6 +57,8 @@ namespace JoyMoe.HttpSig
 
             public const string Signature = "signature";
 
+            public const string XHttpSigKeyId = "x-httpsig-key-id";
+
             // HTTP Standard Headers
 
             public const string Authorization = "authorization";
@@ -65,7 +67,7 @@ namespace JoyMoe.HttpSig
             public const string Date = "date";
             public const string Digest = "digest";
             public const string Host = "host";
-            public const string WAuthenticate = "www-authenticate";
+            public const string WwwAuthenticate = "www-authenticate";
         }
     }
 }

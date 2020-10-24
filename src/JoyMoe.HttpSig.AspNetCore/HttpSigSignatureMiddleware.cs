@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,21 +77,7 @@ namespace JoyMoe.HttpSig.AspNetCore
             }
 
             string header = request.Headers[HeaderNames.Signature];
-
-            var separator = header.IndexOf(' ', StringComparison.InvariantCulture);
-            if (separator < 0)
-            {
-                return false;
-            }
-
-            var scheme = header.Substring(0, separator);
-            if (!HeaderNames.Signature.Equals(scheme, StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-
-            var parameters = header.Substring(separator + 1);
-            if (string.IsNullOrWhiteSpace(parameters))
+            if (string.IsNullOrWhiteSpace(header))
             {
                 return false;
             }
@@ -99,7 +86,7 @@ namespace JoyMoe.HttpSig.AspNetCore
 
             try
             {
-                signature = HttpSigSignature.Parse(parameters);
+                signature = HttpSigSignature.Parse(header);
             }
             catch (ArgumentException)
             {
@@ -108,6 +95,12 @@ namespace JoyMoe.HttpSig.AspNetCore
 
             var headers = request.Headers
                 .ToDictionary(h => h.Key, h => h.Value.First(), StringComparer.InvariantCultureIgnoreCase);
+
+            headers[HeaderNames.Created] = signature.Created.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture);
+            headers[HeaderNames.Expires] = signature.Expires?.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture) ?? "";
+#pragma warning disable CA1308 // Normalize strings to uppercase
+            headers[HeaderNames.RequestTarget] = $"{request.Method.ToLowerInvariant()} {request.Path.Value!}{request.QueryString}";
+#pragma warning restore CA1308 // Normalize strings to uppercase
 
             if (headers.ContainsKey(HeaderNames.Digest))
             {
@@ -144,55 +137,39 @@ namespace JoyMoe.HttpSig.AspNetCore
                 return;
             }
 
-            if (!response.Headers.ContainsKey(HeaderNames.Signature))
+            if (!response.Headers.ContainsKey(HeaderNames.XHttpSigKeyId))
             {
                 return;
             }
 
-            string header = response.Headers[HeaderNames.Signature];
-
-            var separator = header.IndexOf(' ', StringComparison.InvariantCulture);
-            if (separator < 0)
+            string keyId = response.Headers[HeaderNames.XHttpSigKeyId];
+            if (string.IsNullOrWhiteSpace(keyId))
             {
                 return;
             }
 
-            var scheme = header.Substring(0, separator);
-            if (!HeaderNames.Signature.Equals(scheme, StringComparison.OrdinalIgnoreCase))
+            response.Headers.Remove(HeaderNames.XHttpSigKeyId);
+
+            var signature = new HttpSigSignature
             {
-                return;
-            }
+                Headers =
+                {
+                    HeaderNames.Date,
+                    HeaderNames.Digest
+                }
+            };
 
-            var parameters = header.Substring(separator + 1);
-            if (string.IsNullOrWhiteSpace(parameters))
+            if (!response.Headers.ContainsKey(HeaderNames.Date))
             {
-                return;
+                var date = DateTimeOffset.UtcNow.ToString("R");
+                response.Headers.Add(HeaderNames.Date, date);
             }
-
-            HttpSigSignature signature;
-
-            try
-            {
-                signature = HttpSigSignature.Parse(parameters);
-            }
-            catch (ArgumentException)
-            {
-                return;
-            }
-
-            signature.Headers.Clear();
-            signature.Headers.Add(HeaderNames.Date);
-            signature.Headers.Add(HeaderNames.Digest);
-
-            var date = DateTimeOffset.UtcNow.ToString("R");
-            response.Headers.Remove(HeaderNames.Date);
-            response.Headers.Add(HeaderNames.Date, date);
 
             var digest = DigestHelper.GenerateDigest(response.Body, HashAlgorithmNames.Sha256);
             response.Headers.Remove(HeaderNames.Digest);
             response.Headers.Add(HeaderNames.Digest, digest);
 
-            var credential = await _provider.GetKeyByKeyIdAsync(signature.KeyId).ConfigureAwait(false);
+            var credential = await _provider.GetKeyByKeyIdAsync(keyId).ConfigureAwait(false);
             if (credential == null)
             {
                 return;

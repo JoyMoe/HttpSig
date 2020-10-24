@@ -25,9 +25,6 @@ namespace JoyMoe.HttpSig
                 throw new ArgumentNullException(nameof(headers));
             }
 
-            signature.Headers.TryAdd(HeaderNames.RequestTarget);
-
-            signature.Headers.TryAdd(HeaderNames.Created);
             headers[HeaderNames.Created] = signature.Created.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture);
 
             if (signature.Expires.HasValue)
