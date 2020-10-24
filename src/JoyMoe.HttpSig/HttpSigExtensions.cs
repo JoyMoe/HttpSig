@@ -25,9 +25,6 @@ namespace JoyMoe.HttpSig
                 throw new ArgumentNullException(nameof(headers));
             }
 
-            signature.Headers.TryAdd(HeaderNames.RequestTarget);
-
-            signature.Headers.TryAdd(HeaderNames.Created);
             headers[HeaderNames.Created] = signature.Created.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture);
 
             if (signature.Expires.HasValue)
@@ -69,7 +66,7 @@ namespace JoyMoe.HttpSig
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(signature.Algorithm) && signature.Algorithm != Algorithms.Hs2019)
+            if (!string.IsNullOrWhiteSpace(signature.Algorithm) && signature.Algorithm != AlgorithmNames.Hs2019)
             {
                 if (signature.Algorithm != credential.Algorithm) return false;
             }

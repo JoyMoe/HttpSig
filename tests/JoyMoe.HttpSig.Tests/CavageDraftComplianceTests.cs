@@ -6,7 +6,7 @@ using static JoyMoe.HttpSig.HttpSigConstants;
 
 namespace JoyMoe.HttpSig.Tests
 {
-    public class CavageDarftComplianceTests
+    public class CavageDraftComplianceTests
     {
         private readonly HttpSigRsaCredential _credential;
 
@@ -21,13 +21,13 @@ namespace JoyMoe.HttpSig.Tests
             {HeaderNames.ContentLength, "18"}
         };
 
-        public CavageDarftComplianceTests()
+        public CavageDraftComplianceTests()
         {
             _credential = new HttpSigRsaCredential
             {
                 KeyId = "Test",
 #pragma warning disable CS0618 // Use of obsolete symbol
-                Algorithm = Algorithms.RsaSha256,
+                Algorithm = AlgorithmNames.RsaSha256,
 #pragma warning restore CS0618 // Use of obsolete symbol
                 PublicKey = RSA.Create()
             };

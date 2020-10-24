@@ -36,7 +36,9 @@ namespace JoyMoe.HttpSig.Tests
             var signature = new HttpSigSignature
             {
                 KeyId = "test-key-a",
+#pragma warning disable CS0618 // Use of obsolete symbol
                 Algorithm = null,
+#pragma warning restore CS0618 // Use of obsolete symbol
                 Created = DateTimeOffset.FromUnixTimeSeconds(1402170695),
                 Headers =
                 {

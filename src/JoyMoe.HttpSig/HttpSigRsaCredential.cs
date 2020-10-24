@@ -9,7 +9,7 @@ namespace JoyMoe.HttpSig
     {
         public string KeyId { get; set; } = null!;
 
-        public string Algorithm { get; set; } = Algorithms.RsaSha512;
+        public string Algorithm { get; set; } = AlgorithmNames.RsaSha512;
 
         public virtual RSA? PrivateKey { get; set; }
 
@@ -19,13 +19,13 @@ namespace JoyMoe.HttpSig
         {
             if (PrivateKey == null)
             {
-                throw new ArgumentException("Must specified PrivateKey");
+                throw new ArgumentException("Must specify PrivateKey");
             }
 
             var signature = PrivateKey.SignData(
                 Encoding.UTF8.GetBytes(canonical),
                 GetHashAlgorithm(),
-                Algorithm == Algorithms.RsaSha512 ? RSASignaturePadding.Pss : RSASignaturePadding.Pkcs1
+                Algorithm == AlgorithmNames.RsaSha512 ? RSASignaturePadding.Pss : RSASignaturePadding.Pkcs1
             );
 
             return Convert.ToBase64String(signature);
@@ -35,14 +35,14 @@ namespace JoyMoe.HttpSig
         {
             if (PublicKey == null)
             {
-                throw new ArgumentException("Must specified PublicKey");
+                throw new ArgumentException("Must specify PublicKey");
             }
 
             return PublicKey.VerifyData(
                 Encoding.UTF8.GetBytes(canonical),
                 Convert.FromBase64String(signature),
                 GetHashAlgorithm(),
-                Algorithm == Algorithms.RsaSha512 ? RSASignaturePadding.Pss : RSASignaturePadding.Pkcs1
+                Algorithm == AlgorithmNames.RsaSha512 ? RSASignaturePadding.Pss : RSASignaturePadding.Pkcs1
             );
         }
 

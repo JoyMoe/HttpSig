@@ -26,7 +26,7 @@ namespace JoyMoe.HttpSig.Tests
             _credential = new HttpSigHmacCredential
             {
                 KeyId = "test-key-a",
-                Algorithm = Algorithms.HmacSha512,
+                Algorithm = AlgorithmNames.HmacSha512,
                 Key = Encoding.UTF8.GetBytes("key")
             };
         }
@@ -46,7 +46,7 @@ namespace JoyMoe.HttpSig.Tests
 
             _credential.Sign(signature, _headers);
 
-            Assert.Equal(Algorithms.Hs2019, signature.Algorithm);
+            Assert.Equal(AlgorithmNames.Hs2019, signature.Algorithm);
             Assert.Equal("(created) (request-target)", signature.Headers);
             Assert.NotEmpty(signature.Signature);
 
@@ -74,7 +74,7 @@ namespace JoyMoe.HttpSig.Tests
 
             _credential.Sign(signature, _headers);
 
-            Assert.Equal(Algorithms.Hs2019, signature.Algorithm);
+            Assert.Equal(AlgorithmNames.Hs2019, signature.Algorithm);
             Assert.Equal("(request-target) (created) host date content-type digest content-length", signature.Headers);
             Assert.NotEmpty(signature.Signature);
 

@@ -59,6 +59,11 @@ namespace JoyMoe.HttpSig
             return _items.Contains(item);
         }
 
+        public void Clear()
+        {
+            _items.Clear();
+        }
+
         public bool Remove(string item)
         {
             item = Normalize(item);

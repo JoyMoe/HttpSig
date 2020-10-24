@@ -9,7 +9,7 @@ namespace JoyMoe.HttpSig
     {
         public string KeyId { get; set; } = null!;
 
-        public string Algorithm { get; set; } = Algorithms.Ed25519;
+        public string Algorithm { get; set; } = AlgorithmNames.Ed25519;
 
         public virtual ECDsa? PrivateKey { get; set; }
 
@@ -19,12 +19,12 @@ namespace JoyMoe.HttpSig
         {
             if (PrivateKey == null)
             {
-                throw new ArgumentException("Must specified PrivateKey");
+                throw new ArgumentException("Must specify PrivateKey");
             }
 
             var bytes = Encoding.UTF8.GetBytes(canonical);
 
-            if (Algorithm == Algorithms.Ed25519Ph)
+            if (Algorithm == AlgorithmNames.Ed25519Ph)
             {
                 using var hash = SHA512.Create();
                 bytes = hash.ComputeHash(bytes);
@@ -39,12 +39,12 @@ namespace JoyMoe.HttpSig
         {
             if (PublicKey == null)
             {
-                throw new ArgumentException("Must specified PublicKey");
+                throw new ArgumentException("Must specify PublicKey");
             }
 
             var bytes = Encoding.UTF8.GetBytes(canonical);
 
-            if (Algorithm == Algorithms.Ed25519Ph)
+            if (Algorithm == AlgorithmNames.Ed25519Ph)
             {
                 using var hash = SHA512.Create();
                 bytes = hash.ComputeHash(bytes);
@@ -59,7 +59,7 @@ namespace JoyMoe.HttpSig
 
         private HashAlgorithmName GetHashAlgorithm()
         {
-            return Algorithm.StartsWith(Algorithms.Ed25519, StringComparison.InvariantCulture)
+            return Algorithm.StartsWith(AlgorithmNames.Ed25519, StringComparison.InvariantCulture)
                 ? HashAlgorithmName.SHA512
                 : new HashAlgorithmName(Algorithm.Replace("ecdsa-", "", StringComparison.InvariantCulture).ToUpperInvariant());
         }

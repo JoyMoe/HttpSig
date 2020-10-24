@@ -1,11 +1,11 @@
 using System;
 
-#pragma warning disable CA1034 // Do not nest type Algorithms. Alternatively, change its accessibility so that it is not externally visible.
+#pragma warning disable CA1034 // Nested types should not be visible
 namespace JoyMoe.HttpSig
 {
     public static class HttpSigConstants
     {
-        public static class Algorithms
+        public static class AlgorithmNames
         {
             // Active Algorithms
 
@@ -30,32 +30,45 @@ namespace JoyMoe.HttpSig
             [Obsolete("Deprecated; SHA-1 not secure.")]
             public const string RsaSha1 = "rsa-sha1";
 
-            [Obsolete("Deprecated; specifying signature algorithm enables attack vector.")]
             public const string RsaSha256 = "rsa-sha256";
 
-            [Obsolete("Deprecated; specifying signature algorithm enables attack vector.")]
             public const string HmacSha256 = "hmac-sha256";
 
-            [Obsolete("Deprecated; specifying signature algorithm enables attack vector.")]
             public const string EcdsaSha256 = "ecdsa-sha256";
+        }
+
+        public static class HashAlgorithmNames
+        {
+            [Obsolete("Deprecated; SHA-1 not secure.")]
+            public const string Sha1 = "sha1";
+
+            public const string Sha256 = "sha256";
+
+            public const string Sha512 = "sha512";
         }
 
         public static class HeaderNames
         {
             // Signing HTTP Messages specified Headers
 
-            public const string RequestTarget = "(request-target)";
             public const string Created = "(created)";
             public const string Expires = "(expires)";
+            public const string RequestTarget = "(request-target)";
+
+            public const string Signature = "signature";
+
+            public const string XHttpSigKeyId = "x-httpsig-key-id";
 
             // HTTP Standard Headers
 
+            public const string Authorization = "authorization";
             public const string ContentLength = "content-length";
             public const string ContentType = "content-type";
             public const string Date = "date";
             public const string Digest = "digest";
             public const string Host = "host";
+            public const string WwwAuthenticate = "www-authenticate";
         }
     }
 }
-#pragma warning restore CA1034 // Do not nest type Algorithms. Alternatively, change its accessibility so that it is not externally visible.
+#pragma warning restore CA1034 // Nested types should not be visible
