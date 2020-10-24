@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using static JoyMoe.HttpSig.HttpSigConstants;
 
 namespace JoyMoe.HttpSig.AspNetCore.Tests.Host
@@ -39,7 +40,7 @@ G6aFKaqQfOXKCyWoUiVknQJAXrlgySFci/2ueKlIE1QqIiLSZ8V8OlpFLRnb1pzI
 -----END RSA PRIVATE KEY-----");
         }
 
-        public Task<IHttpSigCredential?> GetKeyByKeyIdAsync(string keyId)
+        public Task<IHttpSigCredential?> GetKeyByKeyIdAsync(HttpContext context, string keyId)
         {
             var credential = Credential.KeyId == keyId ? (IHttpSigCredential) Credential : null;
 

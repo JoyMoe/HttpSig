@@ -121,7 +121,7 @@ namespace JoyMoe.HttpSig.AspNetCore
                 }
             }
 
-            var credential = await _provider.GetKeyByKeyIdAsync(signature.KeyId).ConfigureAwait(false);
+            var credential = await _provider.GetKeyByKeyIdAsync(request.HttpContext, signature.KeyId).ConfigureAwait(false);
             if (credential == null)
             {
                 return false;
@@ -169,7 +169,7 @@ namespace JoyMoe.HttpSig.AspNetCore
             response.Headers.Remove(HeaderNames.Digest);
             response.Headers.Add(HeaderNames.Digest, digest);
 
-            var credential = await _provider.GetKeyByKeyIdAsync(keyId).ConfigureAwait(false);
+            var credential = await _provider.GetKeyByKeyIdAsync(response.HttpContext, keyId).ConfigureAwait(false);
             if (credential == null)
             {
                 return;

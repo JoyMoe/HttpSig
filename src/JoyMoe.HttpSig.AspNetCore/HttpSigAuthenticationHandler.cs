@@ -90,7 +90,7 @@ namespace JoyMoe.HttpSig.AspNetCore
                 }
             }
 
-            var credential = await _keyProvider.GetKeyByKeyIdAsync(signature.KeyId).ConfigureAwait(false);
+            var credential = await _keyProvider.GetKeyByKeyIdAsync(Context, signature.KeyId).ConfigureAwait(false);
             if (credential == null)
             {
                 return AuthenticateResult.Fail("Invalid credentials");
