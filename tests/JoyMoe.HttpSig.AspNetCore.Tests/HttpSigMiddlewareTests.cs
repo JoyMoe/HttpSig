@@ -49,6 +49,8 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests
 
             var passed = await verifier.VerifyAsync(response).ConfigureAwait(false);
             Assert.True(passed);
+
+            Assert.Equal("Hello World!", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
         }
     }
 }

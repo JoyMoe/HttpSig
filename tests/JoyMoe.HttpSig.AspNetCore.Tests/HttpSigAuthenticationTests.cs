@@ -43,6 +43,8 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests
 
             var response = await client.SendAsync(message).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Assert.Equal("Hello World!", await response.Content.ReadAsStringAsync().ConfigureAwait(false));
         }
     }
 }

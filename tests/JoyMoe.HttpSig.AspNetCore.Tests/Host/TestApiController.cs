@@ -13,14 +13,14 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests.Host
         {
             Response.Headers.Add(HeaderNames.XHttpSigKeyId, MockSigCredentialProvider.Credential.KeyId);
 
-            return Ok();
+            return Ok("Hello World!");
         }
 
         [Authorize]
         [HttpGet("Authorized")]
         public IActionResult Authentication()
         {
-            return Ok();
+            return Ok("Hello World!");
         }
     }
 }
