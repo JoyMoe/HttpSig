@@ -7,7 +7,7 @@ namespace JoyMoe.HttpSig.AspNetCore.Tests.Host
 {
     public class MockSigCredentialProvider : IHttpSigCredentialProvider
     {
-        public static readonly HttpSigRsaCredential Credential = new HttpSigRsaCredential
+        public static readonly HttpSigRsaCredential Credential = new()
         {
             KeyId = "test-key-a",
             Algorithm = AlgorithmNames.RsaSha256,

@@ -8,9 +8,16 @@ namespace JoyMoe.HttpSig.Tests
 {
     public class CavageDraftComplianceTests
     {
-        private readonly HttpSigRsaCredential _credential;
+        private readonly HttpSigRsaCredential _credential = new()
+        {
+            KeyId = "Test",
+#pragma warning disable CS0618 // Use of obsolete symbol
+            Algorithm = AlgorithmNames.RsaSha256,
+#pragma warning restore CS0618 // Use of obsolete symbol
+            PublicKey = RSA.Create()
+        };
 
-        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+        private readonly Dictionary<string, string> _headers = new(StringComparer.InvariantCultureIgnoreCase)
         {
             {HeaderNames.Created, "1402170695"},
             {HeaderNames.RequestTarget, "post /foo?param=value&pet=dog"},
@@ -23,16 +30,7 @@ namespace JoyMoe.HttpSig.Tests
 
         public CavageDraftComplianceTests()
         {
-            _credential = new HttpSigRsaCredential
-            {
-                KeyId = "Test",
-#pragma warning disable CS0618 // Use of obsolete symbol
-                Algorithm = AlgorithmNames.RsaSha256,
-#pragma warning restore CS0618 // Use of obsolete symbol
-                PublicKey = RSA.Create()
-            };
-
-            _credential.PublicKey.ImportFromPem(@"-----BEGIN PUBLIC KEY-----
+            _credential.PublicKey!.ImportFromPem(@"-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDCFENGw33yGihy92pDjZQhl0C3
 6rPJj+CvfSC8+q28hxA161QFNUd13wuCTUcq0Qd2qsBe/2hFyc2DCJJg0h1L78+6
 Z4UMR7EOcpfdUE9Hf3m/hs+FUR45uBJeDK1HSFHD8bHKD6kv8FPGfJTotc+2xjJw

@@ -48,7 +48,7 @@ namespace JoyMoe.HttpSig
 
         private HashAlgorithmName GetHashAlgorithm()
         {
-            return new HashAlgorithmName(Algorithm.Replace("rsa-", "", StringComparison.InvariantCulture).ToUpperInvariant());
+            return new(Algorithm.Replace("rsa-", "", StringComparison.InvariantCulture).ToUpperInvariant());
         }
     }
 }

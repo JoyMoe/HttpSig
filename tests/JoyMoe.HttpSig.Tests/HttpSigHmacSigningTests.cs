@@ -8,9 +8,14 @@ namespace JoyMoe.HttpSig.Tests
 {
     public class HttpSigHmacSigningTests
     {
-        private readonly HttpSigHmacCredential _credential;
+        private readonly HttpSigHmacCredential _credential = new()
+        {
+            KeyId = "test-key-a",
+            Algorithm = AlgorithmNames.HmacSha512,
+            Key = Encoding.UTF8.GetBytes("key")
+        };
 
-        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+        private readonly Dictionary<string, string> _headers = new(StringComparer.InvariantCultureIgnoreCase)
         {
             {HeaderNames.Created, "1402170695"},
             {HeaderNames.RequestTarget, "post /foo?param=value&pet=dog"},
@@ -20,16 +25,6 @@ namespace JoyMoe.HttpSig.Tests
             {HeaderNames.Digest, "SHA-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE="},
             {HeaderNames.ContentLength, "18"}
         };
-
-        public HttpSigHmacSigningTests()
-        {
-            _credential = new HttpSigHmacCredential
-            {
-                KeyId = "test-key-a",
-                Algorithm = AlgorithmNames.HmacSha512,
-                Key = Encoding.UTF8.GetBytes("key")
-            };
-        }
 
         [Fact]
         public void MinimalRecommendedSignatureTests()

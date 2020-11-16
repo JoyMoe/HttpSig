@@ -6,7 +6,7 @@ namespace JoyMoe.HttpSig
 {
     public class HttpSigHeaderList : IEnumerable<string>
     {
-        private readonly List<string> _items = new List<string>();
+        private readonly List<string> _items = new();
 
         private static string Normalize(string item)
         {

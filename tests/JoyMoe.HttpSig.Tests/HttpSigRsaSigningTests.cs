@@ -8,9 +8,14 @@ namespace JoyMoe.HttpSig.Tests
 {
     public class HttpSigRsaSigningTests
     {
-        private readonly HttpSigRsaCredential _credential;
+        private readonly HttpSigRsaCredential _credential = new()
+        {
+            KeyId = "test-key-a",
+            PrivateKey = RSA.Create(),
+            PublicKey = RSA.Create()
+        };
 
-        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+        private readonly Dictionary<string, string> _headers = new(StringComparer.InvariantCultureIgnoreCase)
         {
             {HeaderNames.Created, "1402170695"},
             {HeaderNames.RequestTarget, "post /foo?param=value&pet=dog"},
@@ -23,14 +28,7 @@ namespace JoyMoe.HttpSig.Tests
 
         public HttpSigRsaSigningTests()
         {
-            _credential = new HttpSigRsaCredential
-            {
-                KeyId = "test-key-a",
-                PrivateKey = RSA.Create(),
-                PublicKey = RSA.Create()
-            };
-
-            _credential.PublicKey.ImportFromPem(@"-----BEGIN RSA PUBLIC KEY-----
+            _credential.PublicKey!.ImportFromPem(@"-----BEGIN RSA PUBLIC KEY-----
 MIIBCgKCAQEAhAKYdtoeoy8zcAcR874L8cnZxKzAGwd7v36APp7Pv6Q2jdsPBRrw
 WEBnez6d0UDKDwGbc6nxfEXAy5mbhgajzrw3MOEt8uA5txSKobBpKDeBLOsdJKFq
 MGmXCQvEG7YemcxDTRPxAleIAgYYRjTSd/QBwVW9OwNFhekro3RtlinV0a75jfZg

@@ -18,7 +18,7 @@ namespace JoyMoe.HttpSig
 
         public DateTimeOffset? Expires { get; set; }
 
-        public HttpSigHeaderList Headers { get; } = new HttpSigHeaderList();
+        public HttpSigHeaderList Headers { get; } = new();
 
         public string Signature { get; set; } = null!;
 
